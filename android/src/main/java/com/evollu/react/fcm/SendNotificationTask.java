@@ -250,8 +250,8 @@ public class SendNotificationTask extends AsyncTask<Void, Void, Void> {
 
                 int notificationID = bundle.containsKey("id") ? bundle.getString("id", "").hashCode() : (int) System.currentTimeMillis();
                 PendingIntent pendingIntent = PendingIntent.getActivity(mContext, notificationID, intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-
+                    android.os.Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT);
+                
                 notification.setContentIntent(pendingIntent);
 
                 if (bundle.containsKey("android_actions")) {
@@ -270,8 +270,8 @@ public class SendNotificationTask extends AsyncTask<Void, Void, Void> {
                         actionIntent.putExtra("_actionIdentifier", actionId);
                         actionIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         PendingIntent pendingActionIntent = PendingIntent.getActivity(mContext, notificationID, actionIntent,
-                                PendingIntent.FLAG_UPDATE_CURRENT);
-
+                            android.os.Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT);
+                        
                         notification.addAction(0, actionTitle, pendingActionIntent);
                     }
                 }
